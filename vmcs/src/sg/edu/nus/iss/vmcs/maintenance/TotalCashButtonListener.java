@@ -26,5 +26,7 @@ public class TotalCashButtonListener implements ActionListener {
     }
     public void actionPerformed(ActionEvent e) {
         mctrl.getTotalCash();
+        mctrl.getTotalCoin();
+        mctrl.displayCoin();
     }
 }

@@ -32,6 +32,7 @@ public class MaintenancePanel extends Dialog {
     private CoinDisplay cDisplay; // need to be access from other class.
     private DrinkDisplay dDisplay; // need to be access from other class.
     private ButtonItem totalCash;
+    private Label totalCoin;
     private Button transferCash;
     private WarningDisplay validPswd;
     private WarningDisplay invalidPswd;
@@ -80,6 +81,9 @@ public class MaintenancePanel extends Dialog {
         tl = new TotalCashButtonListener(mctrl);
         totalCash.addListener(tl);
 
+        totalCoin = new Label("                  ", Label.RIGHT);
+        totalCoin.setBackground(Color.white);
+
         transferCash = new Button("Press to Collect All Cash");
         transferCash.addActionListener(new TransferCashButtonListener(mctrl));
 
@@ -87,12 +91,17 @@ public class MaintenancePanel extends Dialog {
         tp6.setLayout(new FlowLayout());
         tp6.add(transferCash);
 
-        collectCash =
-            new LabelledDisplay("Collect Cash:", 5, LabelledDisplay.FLOW);
-        exitBtn = new Button("Press Here when Finished");
-        exitBtn.addActionListener(new ExitButtonListener(mctrl));
+        collectCash = new LabelledDisplay( "Collect Cash:", 5,
+            LabelledDisplay.FLOW );
+        exitBtn = new Button( "Press Here when Finished" );
+        exitBtn.addActionListener( new ExitButtonListener( mctrl ) );
 
-        tp5.add(totalCash);
+        Panel tp7 = new Panel();
+        tp7.setLayout(new FlowLayout());
+
+        tp7.add(totalCash);
+        tp7.add(totalCoin);
+        tp5.add(tp7);
         tp5.add(tp6);
         tp5.add(collectCash);
         tp5.add(exitBtn);
@@ -156,6 +165,7 @@ public class MaintenancePanel extends Dialog {
                 cDisplay.setActive(st);
                 dDisplay.setActive(st);
                 totalCash.setActive(st);
+				this.setActiveTotalCoin(st);
                 transferCash.setEnabled(st);
                 break;
             case PSWD :
@@ -174,6 +184,20 @@ public class MaintenancePanel extends Dialog {
         stc = new String(tc + " C");
         totalCash.setValue(stc);
     }
+
+    public void displayTotalCoin(int tc) {
+        String stc;
+
+        stc = new String(tc + " coins");
+        totalCoin.setText(stc);
+    }
+
+    public void setActiveTotalCoin(boolean st) {
+        totalCoin.setEnabled(st);
+        if (!st) {
+            totalCoin.setText("");
+        }
+	}
 
     public void displayCoins(int cc) {
         collectCash.setValue(cc);

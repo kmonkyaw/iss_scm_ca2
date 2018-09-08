@@ -22,11 +22,9 @@ import sg.edu.nus.iss.vmcs.util.VMCSException;
 
 public class CoinDisplay extends Panel {
 
-    public final static String TITLE = "Quantity of Coins Available";
-
     private StoreController storeCtrl;
     private MaintenanceController mCtrl;
-    private ButtonItemDisplay bi;
+    private CoinLabelItemDisplay li;
     private int len;
     private int curIdx;
 
@@ -34,22 +32,41 @@ public class CoinDisplay extends Panel {
         mCtrl = mctrl;
         storeCtrl = mCtrl.getMainController().getStoreController();
 
-        int i;
         len = storeCtrl.getStoreSize(Store.CASH);
         StoreItem[] items = storeCtrl.getStoreItems(Store.CASH);
 
-        bi = new ButtonItemDisplay(TITLE, items, len);
+        li = new CoinLabelItemDisplay(items, len);
 
-        bi.addListener(new CoinDisplayListener(mCtrl));
+        li.clear();
 
-        bi.clear();
-
-        this.add(bi);
+        this.add(li);
 
     }
 
     public void setActive(boolean st) {
-        bi.setActive(st);
+        li.setActive(st);
+        li.clear();
+    }
+
+    /**
+     * Update the quantity and amount of all coins on the display.
+     */
+    public void updateDisplay() throws VMCSException {
+        StoreItem[] items = storeCtrl.getStoreItems(Store.CASH);
+
+        int i;
+        int value;
+        int qty;
+        Coin coin;
+
+        for ( i = 0; i < len; i++ ) {
+            coin = (Coin) items[i].getContent();
+            value = coin.getValue();
+            qty = items[i].getQuantity();
+
+            li.displayQty(i, qty);
+            li.displayAmt(i, qty*value);
+        }
     }
 
     /**
@@ -57,8 +74,8 @@ public class CoinDisplay extends Panel {
      */
     public void displayQty(int idx, int qty) throws VMCSException {
         curIdx = idx;
-        bi.clear();
-        bi.displayQty(idx, qty);
+        li.clear();
+        li.displayQty(idx, qty);
     }
 
     /**

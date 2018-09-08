@@ -145,6 +145,25 @@ public class StoreController {
         return tc;
     }
 
+    /**
+     * This operation returns the total number of coins held in the {@link CashStore}
+     *
+     * @return The total number of coins held in the {@link CashStore}
+     */
+    public int getTotalCoin() {
+        int i;
+        int cc = 0; // coin quauntity;
+        int size = cStore.getStoreSize();
+
+        CashStoreItem item;
+        for ( i = 0; i < size; i++ ) {
+            item = (CashStoreItem)cStore.getStoreItem(i);
+            cc = cc + item.getQuantity();
+        }
+
+        return cc;
+    }
+
     public int transferAll()  {
         int i;
         int cc = 0; // coin quauntity;
