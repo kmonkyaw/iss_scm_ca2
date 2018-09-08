@@ -66,6 +66,15 @@ public class MaintenanceController {
     }
 
     // invoked in CoinDisplayListener
+    public void displayCoin() {
+        try {
+            mpanel.getCoinDisplay().updateDisplay();
+        } catch (VMCSException e) {
+            System.out.println("MaintenanceController.displayCoin:" + e);
+        }
+    }
+
+    // invoked in CoinDisplayListener
     public void displayCoin(int idx) {
         StoreController sctrl = mCtrl.getStoreController();
         CashStoreItem item;
@@ -106,7 +115,13 @@ public class MaintenanceController {
         StoreController sctrl = mCtrl.getStoreController();
         int tc = sctrl.getTotalCash();
         mpanel.displayTotalCash(tc);
+    }
 
+    // TotalCashButtonListener
+    public void getTotalCoin() {
+        StoreController sctrl = mCtrl.getStoreController();
+        int tcoin = sctrl.getTotalCoin();
+        mpanel.displayTotalCoin(tcoin);
     }
 
     // TransferCashButtonListener
@@ -116,15 +131,19 @@ public class MaintenanceController {
         MachineryController machctrl = mCtrl.getMachineryController();
 
         int cc; // coin quantity;
+        int vl; // cash value;
 
         try {
-
+            this.displayCoin();
+            vl = sctrl.getTotalCash();
             cc = sctrl.transferAll();
             mpanel.displayCoins(cc);
+            mpanel.displayTotalCoin(cc);
+            mpanel.displayTotalCash(vl);
             machctrl.displayCoinStock();
             // the cash qty current is displayed in the Maintenance panel needs to be update to be 0;
             // not required.
-            mpanel.updateCurrentQtyDisplay(Store.CASH, 0);
+            //mpanel.updateCurrentQtyDisplay(Store.CASH, 0);
         } catch (VMCSException e) {
             System.out.println("MaintenanceController.transferAll:" + e);
         }
