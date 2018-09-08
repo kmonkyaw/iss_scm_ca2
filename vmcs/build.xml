@@ -1,0 +1,21 @@
+<project name="build" default="compile" basedir=".">
+
+    <property environment="e"/>
+
+    <target name="compile" depends="init">
+        <javac destdir="classes" deprecation="on">
+            <src>
+                <pathelement location="src"/>
+            </src>
+            <classpath>
+                <pathelement location="classes"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="init">
+        <mkdir dir="classes"/>
+    </target>
+
+</project>
+
